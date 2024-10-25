@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Landing, About } from "./pages/index.ts";
 
 function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    fetch("/") // Use '/' to hit the root of the Node.js server
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.text();
-      })
-      .then((data) => setMessage(data))
-      .catch((error) => console.error("Fetch error:", error));
-  }, []);
-
   return (
-    <div>
-      <h1>{message}</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" component={<Landing />} />
+        <Route path="/about" component={<About />} />
+      </Routes>
+    </Router>
   );
 }
 
