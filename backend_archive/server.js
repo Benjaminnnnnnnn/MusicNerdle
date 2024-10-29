@@ -1,10 +1,12 @@
-const express = require("express");
+import express from "express";
 const app = express();
 const PORT = process.env.PORT || 3080;
-const { getAccessToken } = require("./spotify/getAccessToken.js");
+const { SpotifyHander } = require("./spotify/index.js");
+const spotify = new SpotifyHander();
+spotify.initialize();
 
 app.get("/", (req, res) => {
-  res.send(getAccessToken());
+  res.send(spotify.token);
 });
 
 app.get("/profile", (req, res) => {});
