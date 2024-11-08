@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { HelloWorldController } from './contollers';
-import { HelloWorldService } from './services';
+import { HelloWorldController, SpotifyController } from './contollers';
+import { HelloWorldService, SpotifyService } from './services';
 
 @Module({
   imports: [],
-  controllers: [HelloWorldController],
-  providers: [HelloWorldService],
+  controllers: [HelloWorldController, SpotifyController],
+  providers: [HelloWorldService, SpotifyService],
 })
 export class AppModule {}
