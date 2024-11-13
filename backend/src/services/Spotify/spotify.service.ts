@@ -5,7 +5,7 @@ configDotenv();
 
 @Injectable()
 export class SpotifyService {
-  async getAuthToken(): Promise<string> {
+  async getAccessToken(): Promise<string> {
     const url = 'https://accounts.spotify.com/api/token';
     const auth = Buffer.from(
       process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_SECRET,
@@ -30,13 +30,13 @@ export class SpotifyService {
       console.error('Fetch Error: ', error);
     }
   }
-  async getAlbums(albums: string, authToken: string) {
-    const url = 'https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy';
-    console.log(authToken);
+  async getAlbums(albums: string, accessToken: string) {
+    const url = `https://api.spotify.com/v1/albums/${albums}`;
+    console.log(accessToken);
     try {
       const response = await axios.get(url, {
         headers: {
-          Authorization: 'Bearer ' + authToken,
+          Authorization: 'Bearer ' + accessToken,
         },
       });
       return response.data;
@@ -44,11 +44,11 @@ export class SpotifyService {
       console.error(error.response ? error.response.data : error.message);
     }
   }
-  async searchAlbum(album: string, authToken: string) {
+  async searchAlbum(album: string, accessToken: string) {
     const searchUrl = 'https://api.spotify.com/v1/search';
     const response = await axios.get(searchUrl, {
       headers: {
-        Authorization: 'Bearer ' + authToken,
+        Authorization: 'Bearer ' + accessToken,
       },
       params: {
         q: album,
