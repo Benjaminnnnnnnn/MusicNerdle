@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import AlbumInfo from "./Albums/AlbumInfo";
 
 export default function Home() {
-  axios.get("http://localhost:4000/spotify");
   const [albumName, setAlbumName] = useState("");
   const [albumInfo, setAlbumInfo] = useState(null);
 

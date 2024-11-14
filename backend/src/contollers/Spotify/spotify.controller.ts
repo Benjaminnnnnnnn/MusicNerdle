@@ -4,7 +4,9 @@ let accessToken = null;
 
 @Controller('spotify')
 export class SpotifyController {
-  constructor(private readonly SpotifyService: SpotifyService) {}
+  constructor(private readonly SpotifyService: SpotifyService) {
+    this.getAccessToken();
+  }
 
   @Get()
   async getAccessToken(): Promise<void> {
