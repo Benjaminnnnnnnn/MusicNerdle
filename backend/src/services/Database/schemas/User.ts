@@ -1,10 +1,15 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-// Define the interface for the User document (extends mongoose Document)
 interface IUser extends Document {
   name: string;
   email: string;
-  age: number;
+  password: string;
+  topfour: {
+    one: string;
+    two: string;
+    three: string;
+    four: string;
+  };
 }
 
 // Define the schema for the User model
@@ -18,9 +23,15 @@ const userSchema: Schema<IUser> = new Schema({
     required: true,
     unique: true,
   },
-  age: {
-    type: Number,
-    required: true,
+  password: {
+    type: String,
+    require: true,
+  },
+  topfour: {
+    one: { type: String },
+    two: { type: String },
+    three: { type: String },
+    four: { type: String },
   },
 });
 

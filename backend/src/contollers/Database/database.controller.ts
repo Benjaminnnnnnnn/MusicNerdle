@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Body } from '@nestjs/common';
+import { user } from 'src/types';
 import { DatabaseService } from '../../services';
 
 @Controller('db')
@@ -9,8 +10,8 @@ export class DatabaseController {
     await this.DatabaseService.connectDB();
   }
   @Get('/new')
-  async createUser() {
-    await this.DatabaseService.createUser();
+  async createUser(@Body() createUserInfo: user) {
+    await this.DatabaseService.createUser(createUserInfo);
   }
   @Get('/user')
   async getInfo() {

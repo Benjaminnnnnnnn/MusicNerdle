@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { configDotenv } from 'dotenv';
 import mongoose from 'mongoose';
-import User from './User';
+import User from './schemas/User';
+import { user } from 'src/types';
 configDotenv();
 
 @Injectable()
 export class DatabaseService {
+  constructor() {
+    this.connectDB();
+  }
   async connectDB() {
     mongoose
       .connect(process.env.MONGO_URI)
@@ -16,15 +20,10 @@ export class DatabaseService {
         console.error('Failed to connect to MongoDB', err);
       });
   }
-  async createUser() {
+  async createUser(createUserInfo: user) {
     try {
       await this.connectDB();
-
-      const newUser = new User({
-        name: 'Ben',
-        email: 'benaylward87@gmail.com',
-        age: '20',
-      });
+      const newUser = new User(createUserInfo);
 
       const savedUser = await newUser.save();
       console.log('User saved to Mongo: ', savedUser);
