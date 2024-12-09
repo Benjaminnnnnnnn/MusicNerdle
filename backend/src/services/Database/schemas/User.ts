@@ -1,7 +1,8 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface IUser extends Document {
-  name: string;
+  id: string;
+  username: string;
   email: string;
   password: string;
   topfour: {
@@ -10,11 +11,16 @@ interface IUser extends Document {
     three: string;
     four: string;
   };
+  friends: [string];
 }
 
 // Define the schema for the User model
 const userSchema: Schema<IUser> = new Schema({
-  name: {
+  id: {
+    type: String,
+    required: true,
+  },
+  username: {
     type: String,
     required: true,
   },
@@ -32,6 +38,10 @@ const userSchema: Schema<IUser> = new Schema({
     two: { type: String },
     three: { type: String },
     four: { type: String },
+  },
+  friends: {
+    type: [String],
+    required: false,
   },
 });
 

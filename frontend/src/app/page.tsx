@@ -1,39 +1,47 @@
 "use client";
 
-import { useState } from "react";
-import AlbumInfo from "./Albums/AlbumInfo";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  MainPage,
+  CreateGame,
+  JoinGame,
+  UserProfile,
+  AddFriend,
+  Login,
+  CreateAccount,
+} from "./pages"; // Import from ./pages/index.js
 
-export default function Home() {
-  const [albumName, setAlbumName] = useState("");
-  const [albumInfo, setAlbumInfo] = useState(null);
+function App() {
+  // Check if the user is logged in by looking at localStorage
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  const handleSearch = async () => {
-    const data = await AlbumInfo(albumName);
-    setAlbumInfo(data.data);
-  };
   return (
-    <div>
-      <h1>Search for an Album</h1>
-      <div>
-        <label htmlFor="albumName">Enter album name: </label>
-        <input
-          id="albumName"
-          type="text"
-          value={albumName}
-          onChange={(e) => setAlbumName(e.target.value)} // Update album name as the user types
+    <Router>
+      <Routes>
+        {/* If user is logged in, render the main page, otherwise render login page */}
+        <Route path="/" element={isLoggedIn ? <MainPage /> : <Login />} />
+        <Route
+          path="/create-game"
+          element={isLoggedIn ? <CreateGame /> : <Login />}
         />
-      </div>
-      <button onClick={handleSearch}>{"Search"}</button>
-      {albumInfo && (
-        <div>
-          <h2>{albumInfo.name}</h2>
-          <img
-            src={albumInfo.images[0].url}
-            alt={albumInfo.id}
-            style={{ width: "640px", height: "auto" }}
-          />
-        </div>
-      )}
-    </div>
+        <Route
+          path="/join-game"
+          element={isLoggedIn ? <JoinGame /> : <Login />}
+        />
+        <Route
+          path="/user-profile"
+          element={isLoggedIn ? <UserProfile /> : <Login />}
+        />
+        <Route
+          path="/add-friend"
+          element={isLoggedIn ? <AddFriend /> : <Login />}
+        />
+        <Route path="/login" element={<Login />} /> {/* Login page route */}
+        <Route path="/signup" element={<CreateAccount />} />
+      </Routes>
+    </Router>
   );
 }
+
+export default App;

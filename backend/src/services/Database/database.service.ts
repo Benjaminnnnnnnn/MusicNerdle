@@ -3,6 +3,7 @@ import { configDotenv } from 'dotenv';
 import mongoose from 'mongoose';
 import User from './schemas/User';
 import { user } from 'src/types';
+import { randomUUID } from 'crypto';
 configDotenv();
 
 @Injectable()
@@ -20,11 +21,24 @@ export class DatabaseService {
         console.error('Failed to connect to MongoDB', err);
       });
   }
-  async createUser(createUserInfo: user) {
+  async createUser(email: string, username: string, password: string) {
     try {
       await this.connectDB();
-      const newUser = new User(createUserInfo);
-
+      const userInfo = {
+        id: String(randomUUID()),
+        email,
+        username,
+        password,
+        topfour: {
+          one: '',
+          two: '',
+          three: '',
+          four: '',
+        },
+        friends: [],
+      };
+      const newUser = new User(userInfo);
+      console.log(newUser);
       const savedUser = await newUser.save();
       console.log('User saved to Mongo: ', savedUser);
     } catch (err) {
