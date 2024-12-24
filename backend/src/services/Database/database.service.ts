@@ -23,7 +23,6 @@ export class DatabaseService {
   }
   async createUser(email: string, username: string, password: string) {
     try {
-      await this.connectDB();
       const userInfo = {
         id: String(randomUUID()),
         email,
@@ -44,7 +43,6 @@ export class DatabaseService {
     } catch (err) {
       console.error(err);
     }
-    mongoose.disconnect();
   }
   async getUserInfo() {
     try {
@@ -55,6 +53,5 @@ export class DatabaseService {
     } catch (error) {
       console.error('Error finding user:', error);
     }
-    mongoose.disconnect();
   }
 }
