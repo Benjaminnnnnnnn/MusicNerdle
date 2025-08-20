@@ -1,19 +1,21 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { SpotifyService } from '../../services';
-let accessToken = null;
 
 @Controller('spotify')
 export class SpotifyController {
+
+  accessToken?: string;
+
   constructor(private readonly SpotifyService: SpotifyService) {
     this.getAccessToken();
   }
 
   @Get()
   async getAccessToken(): Promise<void> {
-    if (!accessToken) {
+    if (!this.accessToken) {
       try {
         const _accessToken = await this.SpotifyService.getAccessToken();
-        accessToken = _accessToken;
+        this.accessToken = _accessToken;
         return;
       } catch (error) {
         console.log(error);
@@ -27,7 +29,7 @@ export class SpotifyController {
     try {
       const albumsInfo = await this.SpotifyService.getAlbums(
         albumIds,
-        accessToken,
+        this.accessToken,
       );
       console.log(albumsInfo);
     } catch (error) {
@@ -39,7 +41,7 @@ export class SpotifyController {
     try {
       const albumData = await this.SpotifyService.searchAlbum(
         albumName,
-        accessToken,
+        this.accessToken,
       );
       console.log(albumData);
       return albumData;
