@@ -1,4 +1,4 @@
-package services
+package api
 
 import (
 	"net/http"
@@ -6,3 +6,5 @@ import (
 
 func GetAlbum(writer http.ResponseWriter, request *http.Request) {
 }
+
+func GetSessionToken() {}

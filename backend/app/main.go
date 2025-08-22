@@ -1,20 +1,27 @@
 package main
 
 import (
-	"backend/internal/services"
+	"backend/internal/api"
 	"backend/internal/state"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
+)
+
+var (
+	appState state.AppState
 )
 
 func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/hello", services.HelloWorld)
+	appState = initializeServer()
+
+	registerApi(router)
 
 	loggedRouter := handlers.LoggingHandler(log.Writer(), router)
 	corsRouter := handlers.CORS(
@@ -27,5 +34,20 @@ func main() {
 }
 
 func initializeServer() state.AppState {
+
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return *new(state.AppState)
+}
+
+func registerApi(router *mux.Router) {
+	registerHelloApi(router)
+}
+
+func registerHelloApi(router *mux.Router) {
+	router.HandleFunc("/hello", api.HelloWorld(&appState)).Methods("GET")
 }
