@@ -1,6 +1,8 @@
 package main
 
 import (
+	"backend/internal/services"
+	"backend/internal/state"
 	"log"
 	"net/http"
 
@@ -12,6 +14,8 @@ func main() {
 
 	router := mux.NewRouter()
 
+	router.HandleFunc("/hello", services.HelloWorld)
+
 	loggedRouter := handlers.LoggingHandler(log.Writer(), router)
 	corsRouter := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
@@ -20,4 +24,8 @@ func main() {
 
 	log.Println("Server listening on http://localhost:8080")
 	http.ListenAndServe(":8080", corsRouter)
+}
+
+func initializeServer() state.AppState {
+	return *new(state.AppState)
 }
